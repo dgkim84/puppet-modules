@@ -1,10 +1,10 @@
 from fabric.api import *
-from fabric.contrib.files import exists
+from fabric.contrib import files
 
 env.user = 'root'
 cachedir = 'cache.dir'
 
-puppet = {
+app = {
   'sname': 'puppet-2.7.20',
   'name': 'puppet-2.7.20.tar.gz',
   'url': 'http://puppetlabs.com/downloads/puppet/puppet-2.7.20.tar.gz'
@@ -20,8 +20,7 @@ def puppet():
   run('yum install -y ruby rubygems')
   run('gem install facter')
 
-  app = puppet
-  if not exists('%s/%s'%(cachedir, app['name'])):
+  if files.exists('%s/%s'%(cachedir, app['name'])) is False:
     with cd(cachedir):
       run('wget --no-check-certificate -O %s.downloading %s'%(app['name'], app['url']))
       run('mv %s.downloading %s'%(app['name'], app['name']))
