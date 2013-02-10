@@ -1,0 +1,10 @@
+i=0
+HOSTS=""
+for HOST in $CONTENT; do
+  if [ $i -eq 0 ]; then
+    HOSTS=$HOST
+  else
+    HOSTS=$HOSTS,$HOST
+  fi
+  i=$(expr $i + 1)
+done

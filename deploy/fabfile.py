@@ -11,7 +11,11 @@ puppet = {
 }
 
 @parallel(100)
-def prepare():
+def packages():
+  run('yum install -y createrepo tree lsof sysstat')
+
+@parallel(100)
+def puppet():
   init()
   run('yum install -y ruby rubygems')
   run('gem install facter')
@@ -24,6 +28,14 @@ def prepare():
       run('tar xfz %s'%app['name'])
     with cd('%s/%s'%(cachedir, app['sname'])):
       run('./install.rb')
+
+@parallel(100)
+def dev():
+  run('yum install -y git-core make cmake autoconf automake aclocal gcc gcc-c++ patch python-devel python-setuptools openssl-devel openssl-static')
+
+@parallel(100)
+def tools():
+  run('yum install -y tree lsof sysstat iotop')
 
 @parallel(100)
 def clean():

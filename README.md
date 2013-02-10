@@ -18,5 +18,5 @@ $ echo > deploy/hosts << END
 192.100.1.12
 192.100.1.13
 END
-$ ./deploy/prepare.sh
+$ ./deploy/puppet.sh
 ```
