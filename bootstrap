@@ -1,0 +1,30 @@
+#!/bin/sh
+DIR=`dirname $0`
+
+usage() {
+  echo "usage: $0 <Module 1> [<Module 2> <Module N>]"
+  echo ""
+  echo "Modules"
+  for i in `ls -1 modules`; do
+    echo "- $i"
+  done
+}
+
+if [ $# -eq 0 ]; then
+  usage
+  exit 1
+fi
+
+MODULES=""
+while [ "$1" != "" ]; do
+  if [ -d "modules/$1" ]; then
+    echo "adding - $1"
+    MODULES="$MODULES modules/$1"
+  fi
+  shift
+done
+
+mkdir -p $DIR/build
+tar cfz $DIR/build/modules.tar.gz $MODULES
+
+echo "completed..."
