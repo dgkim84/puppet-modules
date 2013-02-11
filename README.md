@@ -24,3 +24,31 @@ $ echo > deploy/hosts << END
 END
 $ ./deploy/puppet.sh
 ```
+
+## Package
+
+```
+$ ./bootstrap
+usage: ./bootstrap <Module 1> [<Module 2> <Module N>]
+
+Available Modules
+- ganglia
+- hadoop1
+- hadoop2
+
+$ ./bootstrap ganglia
+adding - ganglia
+completed...
+$ ls -l build/
+total 16
+-rw-r--r--  1 dgkim84  staff  5132 Feb 12 00:37 modules.tar.gz
+
+$ ./bootstrap ganglia xxafijewoijfaw hadoop2
+adding - ganglia
+adding - hadoop2
+completed...
+
+$ ls -l build/
+total 72
+-rw-r--r--  1 dgkim84  staff  34369 Feb 12 00:38 modules.tar.gz
+```
