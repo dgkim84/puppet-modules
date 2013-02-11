@@ -4,9 +4,13 @@
 
 ```
 $ yum install -y ruby rubygems
-$ gem install facter
+$ gem install facter --no-ri --no-rdoc
 $ wget --no-check-certificate -O puppet-2.7.20.tar.gz http://puppetlabs.com/downloads/puppet/puppet-2.7.20.tar.gz
 $ tar xfz puppet-2.7.20.tar.gz && cd puppet-2.7.20 && ./install.rb
+
+or
+
+$ gem install puppet -v 2.7.20 --no-ri --no-rdoc
 ```
 
 ## Install (Using fabric)
