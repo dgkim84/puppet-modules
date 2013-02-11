@@ -15,16 +15,29 @@ if [ $# -eq 0 ]; then
   exit 1
 fi
 
-MODULES=""
+rm -rf $DIR/build/modules
+mkdir -p $DIR/build/modules
+
 while [ "$1" != "" ]; do
   if [ -d "modules/$1" ]; then
-    echo "adding - $1"
-    MODULES="$MODULES modules/$1"
+    if [ -d "modules/$1/manifests" ]; then
+      echo "adding - $1"
+      cp -r modules/$1 $DIR/build/modules/
+    else
+      for i in `ls modules/$1`; do
+        if [ -d "modules/$1/$i/manifests" ]; then
+          echo "adding - $1/$i"
+          cp -r modules/$1/$i $DIR/build/modules/
+        fi
+      done
+    fi
   fi
   shift
 done
 
-mkdir -p $DIR/build
-tar cfz $DIR/build/modules.tar.gz $MODULES
-
-echo "completed..."
+cd $DIR/build && tar cfz modules.tar.gz modules
+if [ $? == 0 ]; then
+  echo "completed..."
+else
+  echo "failed..."
+fi
