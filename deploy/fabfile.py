@@ -2,13 +2,6 @@ from fabric.api import *
 from fabric.contrib import files
 
 env.user = 'root'
-cachedir = 'cache.dir'
-
-app = {
-  'sname': 'puppet-2.7.20',
-  'name': 'puppet-2.7.20.tar.gz',
-  'url': 'http://puppetlabs.com/downloads/puppet/puppet-2.7.20.tar.gz'
-}
 
 @parallel(100)
 def packages():
@@ -16,17 +9,10 @@ def packages():
 
 @parallel(100)
 def puppet():
-  init()
   run('yum install -y ruby rubygems')
-  run('gem install facter')
+  run('gem install facter --no-ri --no-rdoc')
+  run('gem install puppet -v 2.7.20 --no-ri --no-rdoc')
 
-  if files.exists('%s/%s'%(cachedir, app['name'])) is False:
-    with cd(cachedir):
-      run('wget --no-check-certificate -O %s.downloading %s'%(app['name'], app['url']))
-      run('mv %s.downloading %s'%(app['name'], app['name']))
-      run('tar xfz %s'%app['name'])
-    with cd('%s/%s'%(cachedir, app['sname'])):
-      run('./install.rb')
 
 @parallel(100)
 def dev():
@@ -35,10 +21,3 @@ def dev():
 @parallel(100)
 def tools():
   run('yum install -y tree lsof sysstat iotop')
-
-@parallel(100)
-def clean():
-  run('rm -rf %s'%cachedir)
-
-def init():
-  run('mkdir -p %s'%cachedir)
